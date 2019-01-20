@@ -85,7 +85,6 @@ public class Indexer {
                         Document articlesPage = Jsoup.connect(page2Links.attr("href")).timeout(10 * 1000).get();
                         for (Element articles : articlesPage.select(".archive-list")){
                             for(Element articleLink : articles.select("a")){
-                                if(count!=10) {
                                     count++;
                                     logger.info("Count :- " + count);
                                     Document article = Jsoup.connect(articleLink.attr("href")).timeout(10 * 1000).get();
@@ -109,10 +108,6 @@ public class Indexer {
 
                                     //logger.info(article.select(".article").select("div div p").text());
                                     articleArrayList.add(articleDocument);
-                                }else {
-                                    return articleArrayList;
-
-                                }
                             }
                         }
                     }
