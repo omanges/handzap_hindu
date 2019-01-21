@@ -18,13 +18,17 @@ Step 2 :- Run the code as normal spring boot application.
 
 Note :- No parameters are required to run the code, the Main Class is ApiApplication.
 
+Index of 100 articles have been already created. So direct use of application is possible.
+
 REST API in the application are :-
 
 To get all the articles :- http://localhost:8102/search/article/articles
 
 To get all the authors :- http://localhost:8102/search/article/author
 
-To perform indexing :- http://localhost:8102/search/article/reindex
+To perform indexing :- http://localhost:8102/search/article/reindex 
+
+Note :- By default the no of articles to index is set to 100. In order to change the no of artciles to index change the property noOfArticles in application.properties
 
 To search by author :- http://localhost:8102/search/article/author/{author_name}
 
