@@ -12,12 +12,14 @@
 
 package com.hindu.rest.api;
 
+import com.hindu.rest.api.constants.Constants;
 import com.hindu.rest.api.model.Article;
 import com.hindu.rest.api.repository.ArticleRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -40,9 +42,16 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     @Autowired
     Indexer indexer;
 
+    @Value("${noOfArticles}")
+    String noOfArtciles;
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-         //indexer.index(false);
+        try {
+            Constants.noOfArtciles = (Integer.parseInt(noOfArtciles));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

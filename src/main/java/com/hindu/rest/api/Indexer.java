@@ -50,9 +50,7 @@ public class Indexer {
             operations.putMapping(Article.class);
             //restTemplate.put("http://localhost:9200/articles_new","");
             logger.info("Loading Articles Data Please Wait...");
-            List<Article> temp = getData();
-            for (Article a : temp)
-            articleRepository.save(a);
+            getData();
             logger.info("Completed Loading Articles Data");
         }else{
             logger.info("Index was found!!!");
@@ -60,21 +58,20 @@ public class Indexer {
     }
 
     public void deletIndex(String index_name){
-        restTemplate.delete("http://localhost:9200/*");
+        restTemplate.delete("http://localhost:9200/" + index_name);
     }
 
     public void reIndex(){
-        //deletIndex("articles_new");
         index(true);
     }
 
 
     //To get all the articles using web scrapping
     @Async("ConcurrentTaskExecutor")
-    private List<Article> getData(){
+    private void getData(){
         int count=0;
 
-        List<Article> articleArrayList = new ArrayList<>();
+        logger.info("Indexing " + Constants.noOfArtciles +  " Articles");
         try {
             Document document = Jsoup.connect("https://www.thehindu.com/archive/").timeout(10 * 1000).get();
             //logger.info("Started bro!!! " + document.getElementById("archiveWebContainer").select(".archiveMonthList").size());
@@ -85,7 +82,7 @@ public class Indexer {
                         Document articlesPage = Jsoup.connect(page2Links.attr("href")).timeout(10 * 1000).get();
                         for (Element articles : articlesPage.select(".archive-list")){
                             for(Element articleLink : articles.select("a")){
-                                if(count!=10) {
+                                if(count!=Constants.noOfArtciles) {
                                     count++;
                                     logger.info("Count :- " + count);
                                     Document article = Jsoup.connect(articleLink.attr("href")).timeout(10 * 1000).get();
@@ -108,20 +105,17 @@ public class Indexer {
                                     //logger.info(article.select(".article").select(".intro").text());
 
                                     //logger.info(article.select(".article").select("div div p").text());
-                                    articleArrayList.add(articleDocument);
-                                }else{
-                                    return articleArrayList;
-                                }
+                                    articleRepository.save(articleDocument);
+                                }else
+                                    return;
                             }
                         }
                     }
                 }
             }
-            return articleArrayList;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
     }
 
     //To append intro of article if present

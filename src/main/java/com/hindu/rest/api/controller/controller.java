@@ -17,15 +17,13 @@ import com.hindu.rest.api.model.Article;
 import com.hindu.rest.api.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.log4j2.Log4J2LoggingSystem;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -42,13 +40,12 @@ public class controller {
 
     //To get all the authors
     @GetMapping(value = "/author")
-    public List<String> getAuthors(){
+    public HashSet<String> getAuthors(){
         logger.info("Inside getAuthors");
-      List<String> authors = new ArrayList<>();
+      HashSet<String> authors = new HashSet<>();
       Iterable<Article> articlesIterable = articleRepository.findAll();
       articlesIterable.forEach(v -> {
-          logger.info(v.getDescription());
-          authors.add(v.getAuthor());
+          authors.add(v.getAuthor().trim());
       });
       return authors;
     }
@@ -65,7 +62,7 @@ public class controller {
         return articles;
     }
 
-    //To earch based on title
+    //To search based on title
     @GetMapping(value = "/title/{title}")
     public List<Article> getArticlesByTitle(@PathVariable final String title){
         logger.info("Inside getArticlesByTitle Title " + title);
@@ -76,7 +73,6 @@ public class controller {
     @GetMapping(value = "/author/{author}")
     public List<Article> getArticlesByAuthor(@PathVariable final String author){
         logger.info("Inside getArticlesByAuthor author " + author);
-        //logger.info(articleRepository.findByArtifindByArticleTitleLikecleAuthor(author).size());
         return articleRepository.findByAuthorContainingIgnoreCase(author);
     }
 
@@ -90,7 +86,7 @@ public class controller {
     //To delete index of elastic search
     @GetMapping(value = "/delete_index/{index_name}")
     public String deleteIndex(@PathVariable final String index_name){
-
+        indexer.deletIndex(index_name);
         return index_name + " index deleted";
     }
 
