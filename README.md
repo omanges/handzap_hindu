@@ -6,9 +6,11 @@ In order to start the Application.
 
 Step 1 :- Navigate to the root of the project directory.
 
-Step 2 :- Then navigate to elasticsearch-5.6.14 directory.
+Step 2 :- Extract the elasticsearch-5.6.14.zip
 
-Step 3 :- Run the following command :-
+Step 3 :- Then navigate to elasticsearch-5.6.14 directory.
+
+Step 4 :- Run the following command :-
 
 Command :- ./bin/elasticsearch
 
