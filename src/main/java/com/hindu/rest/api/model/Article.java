@@ -32,58 +32,61 @@ public class Article {
 
     @NotNull
     @JsonProperty("author")
-    private String articleAuthor;
+    private String author;
 
     @NotNull
     @JsonProperty("title")
-    private String articleTitle;
+    private String title;
 
     @NotNull
     @JsonProperty("description")
-    private String articleDescription;
+    private String description;
 
-    public Article(){
-
-    }
 
     public Article(String title, String author, String description,String id) {
-        this.articleTitle = title;
-        this.articleAuthor = author;
-        this.articleDescription = description;
+        this.title = title;
+        this.author = author;
+        this.description = description;
         this.id = id;
     }
 
-    public String getTitle() {
-        return this.articleTitle;
-    }
-
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.articleTitle= title;
-    }
-
     public String getAuthor() {
-        return this.articleAuthor;
+        return author;
     }
 
     public void setAuthor(String author) {
-        this.articleAuthor = author;
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
-        return this.articleDescription;
+        return description;
     }
 
     public void setDescription(String description) {
-        this.articleDescription = description;
+        this.description = description;
     }
+
+    public Article(){
+
+
+    }
+
 
 
 

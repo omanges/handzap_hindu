@@ -51,8 +51,8 @@ public class Indexer {
             //restTemplate.put("http://localhost:9200/articles_new","");
             logger.info("Loading Articles Data Please Wait...");
             List<Article> temp = getData();
-            logger.info(temp.get(0).getTitle());
-            articleRepository.saveAll(temp);
+            for (Article a : temp)
+            articleRepository.save(a);
             logger.info("Completed Loading Articles Data");
         }else{
             logger.info("Index was found!!!");
@@ -85,19 +85,20 @@ public class Indexer {
                         Document articlesPage = Jsoup.connect(page2Links.attr("href")).timeout(10 * 1000).get();
                         for (Element articles : articlesPage.select(".archive-list")){
                             for(Element articleLink : articles.select("a")){
+                                if(count!=10) {
                                     count++;
                                     logger.info("Count :- " + count);
                                     Document article = Jsoup.connect(articleLink.attr("href")).timeout(10 * 1000).get();
                                     logger.info(articleLink.attr("href"));
-                                    String title=article.select(".article").select(".title").text().trim();
-                                    String author=article.select(".article").select(".mobile-author").text().trim();
+                                    String title = article.select(".article").select(".title").text().trim();
+                                    String author = article.select(".article").select(".mobile-author").text().trim();
                                     String desc = getDescription(article.select(".article").select(".title").text().trim()
                                             , article.select(".article").select("div div p").text().trim());
                                     Article articleDocument = new Article(
                                             title,
                                             author,
                                             desc,
-                                            count+""
+                                            count + ""
                                     );
                                     //logger.info(article.select(".article").select(".title").text());
 
@@ -108,6 +109,9 @@ public class Indexer {
 
                                     //logger.info(article.select(".article").select("div div p").text());
                                     articleArrayList.add(articleDocument);
+                                }else{
+                                    return articleArrayList;
+                                }
                             }
                         }
                     }

@@ -69,22 +69,22 @@ public class controller {
     @GetMapping(value = "/title/{title}")
     public List<Article> getArticlesByTitle(@PathVariable final String title){
         logger.info("Inside getArticlesByTitle Title " + title);
-        return articleRepository.findByArticleTitle(title);
+        return articleRepository.findByTitleContainingIgnoreCase(title);
     }
 
     //To search based on author
     @GetMapping(value = "/author/{author}")
     public List<Article> getArticlesByAuthor(@PathVariable final String author){
         logger.info("Inside getArticlesByAuthor author " + author);
-        logger.info(articleRepository.findByArticleAuthor(author).size());
-        return articleRepository.findByArticleAuthor(author);
+        //logger.info(articleRepository.findByArtifindByArticleTitleLikecleAuthor(author).size());
+        return articleRepository.findByAuthorContainingIgnoreCase(author);
     }
 
     //To search based on description
     @GetMapping(value = "/desc/{description}")
     public List<Article> getArticlesByDescription(@PathVariable final String description){
         logger.info("Inside getArticlesByDescription description " + description);
-        return articleRepository.findByArticleDescription(description);
+        return articleRepository.findByDescriptionContainingIgnoreCase(description);
     }
 
     //To delete index of elastic search

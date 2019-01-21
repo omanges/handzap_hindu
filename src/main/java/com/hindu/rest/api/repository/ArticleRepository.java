@@ -22,11 +22,9 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends ElasticsearchRepository<Article, String> {
 
-    Iterable<Article> findAll();
+    List<Article> findByTitleContainingIgnoreCase(String title);
 
-    List<Article> findByArticleTitle(String title);
+    List<Article> findByAuthorContainingIgnoreCase(String author);
 
-    List<Article> findByArticleAuthor(String author);
-
-    List<Article> findByArticleDescription(String description);
+    List<Article> findByDescriptionContainingIgnoreCase(String description);
 }
